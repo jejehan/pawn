@@ -20,10 +20,10 @@ func (p *pawn) Apply() {
 	pawnID := p.PawnID
 }
 
-func (p *pawn) PawnRate() {
+func (p *pawn) PawnRates() int {
 	return (p.Amount * p.PawnRate) / 100
 }
 
-func (p *pawn) NextPawnID() {
+func (p *pawn) NextPawnID() PawnID {
 	return PawnID(uuid.New())
 }

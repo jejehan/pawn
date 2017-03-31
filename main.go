@@ -1,11 +1,13 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
+	"pawn/src/gadai"
 	"sync"
 	"syscall"
 
@@ -20,6 +22,8 @@ const (
 )
 
 func main() {
+
+	ctx := context.Background()
 
 	var logger log.Logger
 	logger = log.NewLogfmtLogger(os.Stderr)
@@ -40,6 +44,11 @@ func main() {
 	flag.Parse()
 
 	mux := http.NewServeMux()
+
+	var gs gadai.GadaiService
+	gs = gadai.NewService()
+	mux.Handle("/gadai/v2/", gadai.MakeHandler(ctx, gs))
+
 	mux.Handle("/", accessControl(mux))
 	mux.Handle("/metrics", stdprometheus.Handler())
 
