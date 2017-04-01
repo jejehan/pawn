@@ -44,3 +44,22 @@ func decodeAjukanGadaiRequest(_ context.Context, r *http.Request) (interface{}, 
 		duration:   duration,
 	}, nil
 }
+
+func decodeTaksirGadaiRequest(_ context.Context, r *http.Request) (interface{}, error) {
+
+	barangID := r.FormValue("barang_id")
+	merk := r.FormValue("merk")
+	tipe := r.FormValue("tipe")
+	kapasitasMemori := r.FormValue("kapasitas_memori")
+	tahunPembelian := r.FormValue("tahun_pembelian")
+	hargaBeli := r.FormValue("harga_beli")
+
+	return taksiranGadaiRequest{
+		BarangID:        barangID,
+		Merk:            merk,
+		Tipe:            tipe,
+		KapasitasMemori: kapasitasMemori,
+		TahunPembelian:  tahunPembelian,
+		HargaBeli:       hargaBeli,
+	}, nil
+}

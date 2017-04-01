@@ -6,6 +6,7 @@ import (
 
 type GadaiService interface {
 	Ajukan(fundNeeded, duration float64) float64
+	Taksir(request taksiranGadaiRequest) string
 }
 
 type gadaiService struct{}
@@ -20,5 +21,6 @@ func (gs *gadaiService) Ajukan(fundNeeded, duration float64) float64 {
 
 func (gs *gadaiService) Taksir(req taksiranGadaiRequest) string {
 	var gadai gadai.Gadai
-	taksir := taksir.TaksirElektronik{}
+	v := gadai.Taksir()
+	return v.TaksirID
 }

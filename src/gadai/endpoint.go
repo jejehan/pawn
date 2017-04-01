@@ -33,7 +33,7 @@ type ajukanGadaiResponse struct {
 func makeTaksirGadaiEndPoint(svc GadaiService) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(taksiranGadaiRequest)
-		v := svc.Taksir()
+		v := svc.Taksir(req)
 		return taksiranGadaiResponse{v}, nil
 	}
 }
@@ -48,7 +48,7 @@ type taksiranGadaiRequest struct {
 	KapasitasHardisk string `json:"kapasitas_hardisk"`
 	OperatingSistem  string `json:"operating_sistem"`
 	KelengkapanLain  string `json:"kelengkapan_lain"`
-	HargaBeli        int    `json:"harga_beli"`
+	HargaBeli        string `json:"harga_beli"`
 }
 
 type taksiranGadaiResponse struct {
