@@ -12,12 +12,19 @@ import (
 func MakeHandler(ctx context.Context, gd GadaiService) http.Handler {
 	r := mux.NewRouter()
 
+	taksiranGadaiHandler := kithttp.NewServer(
+		ctx,
+		makeTaksirGadaiEndPoint(gd),
+		decodeTaksirGadaiRequest,
+		encodeResponse,
+	)
 	ajukanGadaiHandler := kithttp.NewServer(
 		ctx,
 		makeAjukanGadaiEndpoint(gd),
 		decodeAjukanGadaiRequest,
 		encodeResponse,
 	)
+	r.Handle("/gadai/v2/taksiran", taksiranGadaiHandler).Methods("POST")
 	r.Handle("/gadai/v2/ajukan", ajukanGadaiHandler).Methods("POST")
 
 	return r

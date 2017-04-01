@@ -1,5 +1,5 @@
 # Gadai
-API Gadai online pinjam.co.id,
+API Gadai online gadein.com,
 
 ## Endpoint - /gadai/v2/
 

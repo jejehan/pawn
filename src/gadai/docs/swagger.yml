@@ -1,0 +1,13 @@
+consumes:
+- gadai/v2/
+definitions: {}
+info:
+  description: Application for gadein.com in Gadai Context
+  title: Gadai 2.0 Application
+  version: 2.0.0
+paths: {}
+produces:
+- application/json
+schemes:
+- http
+swagger: "2.0"

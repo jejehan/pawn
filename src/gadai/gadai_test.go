@@ -1,3 +1,0 @@
-package domain
-
-func Test

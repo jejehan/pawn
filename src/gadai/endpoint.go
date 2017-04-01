@@ -29,3 +29,28 @@ type ajukanGadaiRequest struct {
 type ajukanGadaiResponse struct {
 	AdminCost float64 `json:"admin_cost"`
 }
+
+func makeTaksirGadaiEndPoint(svc GadaiService) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+		req := request.(taksiranGadaiRequest)
+		v := svc.Taksir()
+		return taksiranGadaiResponse{v}, nil
+	}
+}
+
+type taksiranGadaiRequest struct {
+	BarangID         string `json:"barang_id"`
+	Merk             string `json:"merk"`
+	Tipe             string `json:"tipe"`
+	Warna            string `json:"warna"`
+	TahunPembelian   string `json:"tahun_pembelian"`
+	KapasitasMemori  string `json:"kapasitas_memori"`
+	KapasitasHardisk string `json:"kapasitas_hardisk"`
+	OperatingSistem  string `json:"operating_sistem"`
+	KelengkapanLain  string `json:"kelengkapan_lain"`
+	HargaBeli        int    `json:"harga_beli"`
+}
+
+type taksiranGadaiResponse struct {
+	TaksirID string `json:"taksir_id"`
+}
