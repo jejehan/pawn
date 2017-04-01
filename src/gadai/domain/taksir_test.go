@@ -1,9 +1,6 @@
 package gadai
 
-import (
-	"pawn/src/gadai/domain/gadai"
-	"testing"
-)
+import "testing"
 
 type taksiranElektronik struct {
 	Taksir TaksirElektronik
@@ -32,14 +29,20 @@ func TestNasabahMelakukanTaksirElektronikOnline(t *testing.T) {
 	}
 
 	for _, tt := range taksirCases {
-		taksir := gadai.Taksir(tt.Taksir)
-
+		var gadai Gadai
+		gadai = &tt.Taksir
+		taksir := gadai.Taksir()
 		taksirID := taksir.TaksirID
 		errorMsg := taksir.ErrorMsg
+
 		if taksirID == "" {
 			if errorMsg == "" {
 				t.Errorf("Taksir ID tidak ada, seharusnya ada pesan errornya")
 			}
+		}
+
+		if taksirID != "" && len(taksirID) != 36 {
+			t.Errorf("Taksir ID adalah uuid seharusnya jumlahnya 36, yang sekarang %d", len(taksirID))
 		}
 	}
 }

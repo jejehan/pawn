@@ -1,10 +1,24 @@
 package gadai
 
+import "time"
+
+//TaksirResponse response yang diberikan untuk taksiran
 type TaksirResponse struct {
-	TaksirID string
-	ErrorMsg string
+	TaksirID         string
+	BarangID         string
+	Merk             string
+	Tipe             string
+	Warna            string
+	TahunPembelian   time.Time
+	KapasitasMemori  string
+	KapasitasHardisk string
+	OperatingSistem  string
+	KelengkapanLain  string
+	HargaBeli        int
+	ErrorMsg         string
 }
 
+//TaksirElektronik struct request untuk alat elektronik
 type TaksirElektronik struct {
 	BarangID         string
 	Merk             string
@@ -18,9 +32,38 @@ type TaksirElektronik struct {
 	HargaBeli        int
 }
 
+//Taksir menghasilkan data untuk menyimpan data taksir
 func (t *TaksirElektronik) Taksir() TaksirResponse {
-	return TaksirResponse{
-		TaksirID: "236ae212-0e23-41cf-821f-e811c49a9d21",
-		ErrorMsg: "",
+	taksirID := TaksirID()
+	tahunPembelian, err := ValidasiTahunPembelian(t.TahunPembelian, 5)
+	if err != "" {
+		return TaksirResponse{ErrorMsg: err}
 	}
+	return TaksirResponse{
+		TaksirID:        taksirID,
+		BarangID:        t.BarangID,
+		Merk:            t.Merk,
+		Tipe:            t.Tipe,
+		Warna:           t.Warna,
+		KapasitasMemori: t.KapasitasMemori,
+		TahunPembelian:  tahunPembelian,
+		HargaBeli:       t.HargaBeli,
+		ErrorMsg:        "",
+	}
+}
+
+//ValidasiTahunPembelian memvalidasi apakah tahun pembelian masih diterima
+//return date, error
+//string adalah error untuk mengisi error message
+func ValidasiTahunPembelian(tahunPembelian string, tahunEkonomis int) (time.Time, string) {
+	layout := "2006-01-02"
+	date, _ := time.Parse(layout, tahunPembelian)
+	now := time.Now()
+
+	diffYears := DateDiffYear(now, date)
+	if diffYears > tahunEkonomis {
+		return date, "Barang anda sudah melewati batas tahun ekonomis"
+	}
+
+	return date, ""
 }
