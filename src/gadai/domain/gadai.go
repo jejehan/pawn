@@ -17,12 +17,12 @@ import (
 // Perpanjangan adalah ketika nasabah tidak bisa mengembalikan dana dan minta perpanjangan waktu
 // Lelang adalah ketika nasabah tidak bisa mengembalikan dana sehingga barang yang dijaminkan
 // akan dijual oleh pihak gadein.com.
-type Gadai interface {
-	Taksir() TaksirResponse
+/*type Gadai interface {
+	//Taksir(request interface{}) TaksirResponse
 	//Simulation() string
 	//Ajukan() string
 	//BiayaSewaModal() string
-}
+}*/
 
 //TaksirID menghasilkan uuid
 func TaksirID() string {

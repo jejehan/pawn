@@ -18,8 +18,8 @@ type TaksirResponse struct {
 	ErrorMsg         string
 }
 
-//TaksirElektronik struct request untuk alat elektronik
-type TaksirElektronik struct {
+//TaksirRequest struct request untuk alat elektronik
+type TaksirRequest struct {
 	BarangID         string
 	Merk             string
 	Tipe             string
@@ -33,7 +33,8 @@ type TaksirElektronik struct {
 }
 
 //Taksir menghasilkan data untuk menyimpan data taksir
-func (t *TaksirElektronik) Taksir() TaksirResponse {
+func Taksir(request interface{}) TaksirResponse {
+	t := request.(*TaksirRequest)
 	taksirID := TaksirID()
 	tahunPembelian, err := ValidasiTahunPembelian(t.TahunPembelian, 5)
 	if err != "" {
