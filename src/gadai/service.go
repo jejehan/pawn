@@ -37,8 +37,6 @@ func (gs *gadaiService) Taksir(req taksiranGadaiRequest) string {
 		HargaBeli:       hargaBeli,
 	}
 	v := gadai.Taksir(&rq)
-
 	gs.taksirs.Save(v)
-
 	return v.TaksirID
 }

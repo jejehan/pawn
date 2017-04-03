@@ -23,10 +23,6 @@ import (
 	stdprometheus "github.com/prometheus/client_golang/prometheus"
 )
 
-const (
-	defaultPort = "7070"
-)
-
 func main() {
 
 	ctx := context.Background()
