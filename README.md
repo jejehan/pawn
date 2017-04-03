@@ -1,6 +1,6 @@
-# Skeleton Pinjam.co.id Gadai v.2
+# Skeleton gadein.com Gadai v.2
 
-Domain Driven Design untuk system pinjam.co.id, dengan domain
+Domain Driven Design untuk system gadein.com, dengan domain
 
 1. Pawn
 domain gadai adalah domain yang menyelesaikan/menangangi transaksi gadai
