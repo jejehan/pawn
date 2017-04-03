@@ -14,6 +14,7 @@ import (
 	gadais "pawn/src/gadai/repository"
 
 	"github.com/go-kit/kit/log"
+	kitprometheus "github.com/go-kit/kit/metrics/prometheus"
 	"github.com/jinzhu/gorm"
 	//_ "github.com/jinzhu/gorm/dialects/sqlite"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -65,13 +66,31 @@ func main() {
 
 	flag.Parse()
 
-	mux := http.NewServeMux()
+	fieldKeys := []string{"method"}
 
 	var taksirs gadais.Repository
 	taksirs = gadais.Init(db)
 
 	var gs gadai.GadaiService
 	gs = gadai.NewService(taksirs)
+	gs = gadai.NewLoggingService(log.NewContext(logger).With("component", "gadai"), gs)
+	gs = gadai.NewInstrumentingService(
+		kitprometheus.NewCounterFrom(stdprometheus.CounterOpts{
+			Namespace: "api",
+			Subsystem: "gadai_service",
+			Name:      "request_count",
+			Help:      "Number of requests received.",
+		}, fieldKeys),
+		kitprometheus.NewSummaryFrom(stdprometheus.SummaryOpts{
+			Namespace: "api",
+			Subsystem: "gadai_service",
+			Name:      "request_latency_microseconds",
+			Help:      "Total duration of requests in microseconds.",
+		}, fieldKeys),
+		gs,
+	)
+
+	mux := http.NewServeMux()
 	mux.Handle("/gadai/v2/", gadai.MakeHandler(ctx, gs))
 
 	mux.Handle("/", accessControl(mux))

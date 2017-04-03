@@ -34,6 +34,8 @@ type Taksir struct {
 	OperatingSistem  string
 	KelengkapanLain  string
 	HargaBeli        int
+	HargaTaksirAtas  int
+	HargaTaksirBawah int
 }
 
 func (r *repository) Save(req gadai.TaksirResponse) {
