@@ -2,24 +2,13 @@
 
 Domain Driven Design untuk system gadein.com, dengan domain
 
-1. Pawn
+1. Gadai
 domain gadai adalah domain yang menyelesaikan/menangangi transaksi gadai
-
-    * **Customer Service** mengajukan permintaan gadai, **Customer** adalah pengguna yang telah teregistrasi
-    * **Penaksir Service** melakukan taksiran dan verifikasi barang
-    * **Authorities Staff Service** melakukan approval terhadap data yang telah di verifikasi
-    * **Finance Staff Service** melakukan pencairan terhadap dana yang telah di approve
-
-2. Auction
+2. Lelang
 domain auction adalah domain yang menyelesaikan/menangangi transaksi lelang
-
-    * **Buyer Service** mengajukan penawaran lelang, Buyer adalah pengguna yang telah teregistrasi sama seperti **Customer**
-
-3. Parnership
+3. Mitra
 domain Parnership adalah domain yang mengurusi pendaftaran mitra
-
-    * **BizDev Service** mengajukan mitra baru
-
-4. Membership
+4. Anggota
 domain Membership menangani service keangggotaan
-    * **Member Service** Member melakukan registrasi, update data member,data membership digunakan pada beberapa domain lain
+5. Pengguna
+domain Membership menangani service pengguna
