@@ -4,8 +4,6 @@ import (
 	gadai "pawn/src/gadai/domain"
 	gadais "pawn/src/gadai/repository"
 	"strconv"
-
-	"github.com/jinzhu/gorm"
 )
 
 type GadaiService interface {
@@ -14,12 +12,12 @@ type GadaiService interface {
 }
 
 type gadaiService struct {
-	db *gorm.DB
+	taksirs gadais.Repository
 }
 
-func NewService(db *gorm.DB) GadaiService {
+func NewService(taksirs gadais.Repository) GadaiService {
 	return &gadaiService{
-		db: db,
+		taksirs: taksirs,
 	}
 }
 
@@ -40,20 +38,7 @@ func (gs *gadaiService) Taksir(req taksiranGadaiRequest) string {
 	}
 	v := gadai.Taksir(&rq)
 
-	repo := gadais.Taksir{
-		TaksirID:         v.TaksirID,
-		BarangID:         v.BarangID,
-		Merk:             v.Merk,
-		Tipe:             v.Tipe,
-		Warna:            v.Warna,
-		TahunPembelian:   v.TahunPembelian,
-		KapasitasMemori:  v.KapasitasMemori,
-		KapasitasHardisk: v.KapasitasHardisk,
-		OperatingSistem:  v.OperatingSistem,
-		KelengkapanLain:  v.KelengkapanLain,
-		HargaBeli:        v.HargaBeli,
-	}
+	gs.taksirs.Save(v)
 
-	gs.db.Create(&repo)
 	return v.TaksirID
 }

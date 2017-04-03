@@ -15,7 +15,8 @@ import (
 
 	"github.com/go-kit/kit/log"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	//_ "github.com/jinzhu/gorm/dialects/sqlite"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/joho/godotenv"
 
 	stdprometheus "github.com/prometheus/client_golang/prometheus"
@@ -39,7 +40,8 @@ func main() {
 		logger.Log("Error loading .env file")
 	}
 
-	db, err := gorm.Open("sqlite3", "test.db")
+	//db, err := gorm.Open("sqlite3", "test.db")
+	db, err := gorm.Open("mysql", "root:mysql@/gadai2?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -47,7 +49,15 @@ func main() {
 
 	db.AutoMigrate(&gadais.Taksir{})
 
-	//variable untuk configure service
+	env := os.Getenv("ENV")
+	if env == "DEV" {
+		db.DropTable(&gadais.Taksir{})
+		db.AutoMigrate(&gadais.Taksir{})
+		var ss gadais.SeedService
+		ss = gadais.Config(db)
+		ss.SeedAll()
+	}
+
 	var (
 		addr     = os.Getenv("PORT")
 		httpAddr = flag.String("http.addr", ":"+addr, "HTTP listen address")
@@ -57,8 +67,11 @@ func main() {
 
 	mux := http.NewServeMux()
 
+	var taksirs gadais.Repository
+	taksirs = gadais.Init(db)
+
 	var gs gadai.GadaiService
-	gs = gadai.NewService(db)
+	gs = gadai.NewService(taksirs)
 	mux.Handle("/gadai/v2/", gadai.MakeHandler(ctx, gs))
 
 	mux.Handle("/", accessControl(mux))
